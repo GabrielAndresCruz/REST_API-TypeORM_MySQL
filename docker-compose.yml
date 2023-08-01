@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:5.7
+    # restart: unless-stopped
+    # env_file: ./.env
+    environment:
+      - MYSQL_USER=$DB_USERNAME
+      - MYSQL_PASSWORD=$DB_PASSWORD
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$DB_DATABASE
+    ports:
+      - $DB_PORT:3306
+    logging:
+      driver: none
