@@ -1,5 +1,10 @@
 import express from "express";
+import { AuthorsController } from "../controllers/AuthorsController";
 
 const router = express.Router();
 
-router.get("/");
+const authorsController = new AuthorsController();
+
+router.get("/", authorsController.getAuthors);
+
+export default router;

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import { AUTHORS } from "../../constants/DbTable";
+import { AUTHORS } from "../../constants/DBTable";
 
 export class CreateAuthorsTable1690923565029 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
