@@ -7,17 +7,13 @@ export class AuthorsController {
   async getAuthors(req: Request, res: Response) {
     try {
       const authors = await AppDataSource.getRepository(Author).find();
-      return res.status(200).json({
-        success: true,
-        message: "Fetched authors successfully",
-        data: authors,
-      });
+      return ResponseUtl.sendResponse<Author>(
+        res,
+        "Fetched authors successfully",
+        authors[0]
+      );
     } catch (error) {
-      console.error("Error fetching authors:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to fetch authors",
-      });
+      return ResponseUtl.sendError(res, "Failed to fetch authors", 404, error);
     }
   }
 
@@ -34,11 +30,7 @@ export class AuthorsController {
         author
       );
     } catch (error) {
-      console.error("Error fetching author:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to fetch author",
-      });
+      return ResponseUtl.sendError(res, "Failed to fetch author", 404, error);
     }
   }
 }
