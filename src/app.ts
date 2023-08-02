@@ -10,9 +10,10 @@ app.use(bodyParser.json());
 
 app.use("/authors", authorsRoute);
 
-app.get("/hello", (req, res, next) => {
-  return res.status(200).json({
-    message: "Hello world",
+app.use("*", (req, res) => {
+  return res.status(404).json({
+    success: false,
+    message: "Invalid route",
   });
 });
 
