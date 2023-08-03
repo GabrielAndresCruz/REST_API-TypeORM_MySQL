@@ -19,7 +19,7 @@ export class Paginator {
 
     const pages = Math.ceil(totalItems / pageSize);
     const currentPage = offset / pageSize + 1;
-    const hasNext = currentPage < totalItems;
+    const hasNext = currentPage < pages;
     const hasPrevious = currentPage > 1;
 
     const paginationInfo: PaginationInfo = {

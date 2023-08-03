@@ -26,7 +26,7 @@ export class AuthorsController {
     }
   }
 
-  async getAuthor(req: Request, res: Response) {
+  async getAuthor(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
 
@@ -40,6 +40,24 @@ export class AuthorsController {
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to fetch author", 404, error);
+    }
+  }
+
+  async create(req: Request, res: Response): Promise<Response> {
+    try {
+      const authorData = req.body;
+
+      const repo = AppDataSource.getRepository(Author);
+      const author = repo.create(authorData);
+      await repo.save(author);
+
+      return ResponseUtl.sendResponse<Author>(
+        res,
+        "Author created successfully",
+        author[0]
+      );
+    } catch (error) {
+      return ResponseUtl.sendError(res, "Failed to create author", 404, error);
     }
   }
 }
