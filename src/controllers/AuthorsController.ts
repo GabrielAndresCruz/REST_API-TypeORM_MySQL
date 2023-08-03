@@ -2,15 +2,24 @@ import { Request, Response } from "express";
 import { AppDataSource } from "../database/data-source";
 import { Author } from "../entities/Author";
 import { ResponseUtl } from "../../utils/Response";
+import { Paginator } from "../database/Paginator";
 
 export class AuthorsController {
   async getAuthors(req: Request, res: Response) {
     try {
-      const authors = await AppDataSource.getRepository(Author).find();
+      // const authors = await AppDataSource.getRepository(Author).find();
+      const builder = await AppDataSource.getRepository(Author)
+        .createQueryBuilder()
+        .orderBy("id", "DESC");
+      const { records: authors, paginationInfo } = await Paginator.paginate(
+        builder,
+        req
+      );
       return ResponseUtl.sendResponse<Author>(
         res,
         "Fetched authors successfully",
-        authors[0]
+        authors,
+        paginationInfo
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to fetch authors", 404, error);
