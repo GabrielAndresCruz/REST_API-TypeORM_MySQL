@@ -105,4 +105,22 @@ export class AuthorsController {
       return ResponseUtl.sendError(res, "Failed to update author", 404, error);
     }
   }
+
+  async delete(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+      const repo = AppDataSource.getRepository(Author);
+      const author = await repo.findOneByOrFail({
+        id: Number(id),
+      });
+      await repo.remove(author);
+      return ResponseUtl.sendResponse<Author>(
+        res,
+        "Author deleted successfully",
+        author
+      );
+    } catch (error) {
+      return ResponseUtl.sendError(res, "Failed to delete author", 404, error);
+    }
+  }
 }
