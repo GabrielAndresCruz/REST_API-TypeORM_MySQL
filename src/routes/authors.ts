@@ -16,4 +16,6 @@ router.post(
   authorsController.create
 );
 
+router.put("/:id", authorsController.update);
+
 export default router;

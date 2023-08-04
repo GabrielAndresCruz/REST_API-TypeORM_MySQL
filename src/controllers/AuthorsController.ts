@@ -3,7 +3,7 @@ import { AppDataSource } from "../database/data-source";
 import { Author } from "../entities/Author";
 import { ResponseUtl } from "../utils/Response";
 import { Paginator } from "../database/Paginator";
-import { CreateAuthorDTO } from "../dtos/CreateAuthorDTO";
+import { CreateAuthorDTO, UpdateAuthorDTO } from "../dtos/CreateAuthorDTO";
 import { validate, validateOrReject } from "class-validator";
 
 export class AuthorsController {
@@ -69,6 +69,40 @@ export class AuthorsController {
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to create author", 404, error);
+    }
+  }
+
+  async update(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+      const authorData = req.body;
+
+      console.log(id, authorData);
+      const dto = new UpdateAuthorDTO();
+      Object.assign(dto, authorData);
+
+      const errors = await validate(dto);
+      if (errors.length > 0) {
+        return ResponseUtl.sendError(res, "Invalid data", 422, errors);
+      }
+
+      // await validateOrReject(dto);
+
+      const repo = AppDataSource.getRepository(Author);
+      const author = await repo.findOneByOrFail({
+        id: Number(id),
+      });
+
+      repo.merge(author, authorData);
+      await repo.save(author);
+
+      return ResponseUtl.sendResponse<Author>(
+        res,
+        "Author updated successfully",
+        author
+      );
+    } catch (error) {
+      return ResponseUtl.sendError(res, "Failed to update author", 404, error);
     }
   }
 }
