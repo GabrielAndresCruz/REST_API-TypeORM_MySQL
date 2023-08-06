@@ -6,6 +6,8 @@ import {
   IsEmail,
   IsOptional,
 } from "class-validator";
+import { IsUnique } from "../validators/IsUniqueValidator";
+import { Author } from "../../database/entities/Author";
 
 export class CreateAuthorDTO {
   @IsNotEmpty()
@@ -16,6 +18,7 @@ export class CreateAuthorDTO {
 
   @IsNotEmpty()
   @IsEmail()
+  @IsUnique(Author, "email")
   email: string;
 
   @IsOptional()
@@ -33,6 +36,7 @@ export class UpdateAuthorDTO {
 
   @IsNotEmpty()
   @IsEmail()
+  @IsUnique(Author, "email")
   email: string;
 
   @IsOptional()
