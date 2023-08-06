@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { DBTable } from "../../constants/DBTable";
 import { Book } from "./Book";
@@ -31,6 +32,6 @@ export class Author {
   @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updateAt: Date;
 }

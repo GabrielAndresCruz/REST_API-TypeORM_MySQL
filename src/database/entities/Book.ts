@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { DBTable } from "../../constants/DBTable";
 import { Author } from "./Author";
@@ -20,15 +22,16 @@ export class Book {
   description: string;
 
   @ManyToOne((type) => Author, (author) => author.books, { eager: true })
+  @JoinColumn({ name: "authorId" })
   author: Author;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   authorId: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   price: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   category: string;
 
   @Column({ nullable: true })
@@ -37,6 +40,6 @@ export class Book {
   @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updateAt: Date;
 }

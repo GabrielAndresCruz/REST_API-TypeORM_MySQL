@@ -32,19 +32,19 @@ export class CreateBooksTable1691353538316 implements MigrationInterface {
           },
           {
             name: "authorId",
-            type: "text",
-            isNullable: true,
+            type: "int",
+            isNullable: false,
           },
           {
             name: "price",
-            type: "text",
-            isNullable: true,
+            type: "int",
+            isNullable: false,
           },
           {
             name: "category",
             type: "varchar",
             length: "255",
-            isNullable: true,
+            isNullable: false,
           },
           {
             name: "image",
@@ -72,9 +72,10 @@ export class CreateBooksTable1691353538316 implements MigrationInterface {
     await queryRunner.createForeignKey(
       DBTable.BOOKS,
       new TableForeignKey({
+        name: "authorId",
         columnNames: ["authorId"],
         referencedColumnNames: ["id"],
-        referencedTableName: DBTable.AUTHORS,
+        referencedTableName: "authors",
         onDelete: "CASCADE",
       })
     );
