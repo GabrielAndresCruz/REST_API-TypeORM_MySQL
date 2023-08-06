@@ -2,31 +2,37 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { DBTable } from "../../constants/DBTable";
-import { Book } from "./Book";
+import { Author } from "./Author";
 
-@Entity(DBTable.AUTHORS)
-export class Author {
+@Entity(DBTable.BOOKS)
+export class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ nullable: false })
-  name: string;
+  title: string;
 
   @Column({ nullable: false })
-  email: string;
+  description: string;
+
+  @ManyToOne((type) => Author, (author) => author.books, { eager: true })
+  author: Author;
 
   @Column({ nullable: true })
-  bio: string;
+  authorId: number;
+
+  @Column({ nullable: true })
+  price: number;
+
+  @Column({ nullable: true })
+  category: string;
 
   @Column({ nullable: true })
   image: string;
-
-  @OneToMany((type) => Book, (book) => book.author)
-  books: Book[];
 
   @CreateDateColumn()
   createdAt: Date;
