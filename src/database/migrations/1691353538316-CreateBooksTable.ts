@@ -72,7 +72,6 @@ export class CreateBooksTable1691353538316 implements MigrationInterface {
     await queryRunner.createForeignKey(
       DBTable.BOOKS,
       new TableForeignKey({
-        name: "authorId",
         columnNames: ["authorId"],
         referencedColumnNames: ["id"],
         referencedTableName: "authors",

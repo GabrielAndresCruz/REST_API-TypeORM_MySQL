@@ -22,7 +22,6 @@ export class Book {
   description: string;
 
   @ManyToOne((type) => Author, (author) => author.books, { eager: true })
-  @JoinColumn({ name: "authorId" })
   author: Author;
 
   @Column({ nullable: false })
