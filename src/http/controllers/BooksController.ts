@@ -6,6 +6,7 @@ import { Paginator } from "../../database/Paginator";
 import { CreateAuthorDTO, UpdateAuthorDTO } from "../dtos/CreateAuthorDTO";
 import { validate, validateOrReject } from "class-validator";
 import { Book } from "../../database/entities/Book";
+import { CreateBookDTO } from "../dtos/CreateBookDTO";
 
 export class BooksController {
   async get(req: Request, res: Response) {
@@ -47,28 +48,30 @@ export class BooksController {
 
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const authorData = req.body;
-      authorData.image = req.file?.filename;
+      const bookData = req.body;
+      bookData.image = req.file?.filename;
 
-      const dto = new CreateAuthorDTO();
-      Object.assign(dto, authorData);
+      const dto = new CreateBookDTO();
+      Object.assign(dto, bookData);
+      dto.price = parseInt(bookData.price);
+      dto.authorId = parseInt(bookData.authorId);
 
       const errors = await validate(dto);
       if (errors.length > 0) {
         return ResponseUtl.sendError(res, "Invalid data", 422, errors);
       }
 
-      const repo = AppDataSource.getRepository(Author);
-      const author = repo.create(authorData);
-      await repo.save(author);
+      const repo = AppDataSource.getRepository(Book);
+      const book = repo.create(bookData);
+      await repo.save(book);
 
-      return ResponseUtl.sendResponse<Author>(
+      return ResponseUtl.sendResponse<Book>(
         res,
-        "Author created successfully",
-        author[0]
+        "Book created successfully",
+        book[0]
       );
     } catch (error) {
-      return ResponseUtl.sendError(res, "Failed to create author", 404, error);
+      return ResponseUtl.sendError(res, "Failed to create book", 404, error);
     }
   }
 
