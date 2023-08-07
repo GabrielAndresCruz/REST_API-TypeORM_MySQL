@@ -35,6 +35,7 @@ export class AuthorsController {
       const author = await AppDataSource.getRepository(Author).findOneByOrFail({
         id: Number(id),
       });
+
       return ResponseUtl.sendResponse<Author>(
         res,
         "Fetch author successfully",

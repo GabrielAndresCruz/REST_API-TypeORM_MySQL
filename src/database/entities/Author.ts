@@ -26,7 +26,7 @@ export class Author {
   @Column({ nullable: true })
   image: string;
 
-  @OneToMany((type) => Book, (book) => book.author)
+  @OneToMany((type) => Book, (book) => book.author, { eager: false })
   books: Book[];
 
   @CreateDateColumn()

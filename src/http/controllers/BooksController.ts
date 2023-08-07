@@ -109,15 +109,15 @@ export class BooksController {
   async delete(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const repo = AppDataSource.getRepository(Author);
-      const author = await repo.findOneByOrFail({
+      const repo = AppDataSource.getRepository(Book);
+      const book = await repo.findOneByOrFail({
         id: Number(id),
       });
-      await repo.remove(author);
-      return ResponseUtl.sendResponse<Author>(
+      await repo.remove(book);
+      return ResponseUtl.sendResponse<Book>(
         res,
-        "Author deleted successfully",
-        author
+        "Book deleted successfully",
+        book
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to delete author", 404, error);
