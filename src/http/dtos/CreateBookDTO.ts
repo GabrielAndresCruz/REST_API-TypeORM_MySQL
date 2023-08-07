@@ -54,4 +54,8 @@ export class UpdateBookDTO {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+
+  @IsNotEmpty()
+  @IsString()
+  category: string;
 }

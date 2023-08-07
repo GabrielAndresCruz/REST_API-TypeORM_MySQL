@@ -6,7 +6,7 @@ import { Paginator } from "../../database/Paginator";
 import { CreateAuthorDTO, UpdateAuthorDTO } from "../dtos/CreateAuthorDTO";
 import { validate, validateOrReject } from "class-validator";
 import { Book } from "../../database/entities/Book";
-import { CreateBookDTO } from "../dtos/CreateBookDTO";
+import { CreateBookDTO, UpdateBookDTO } from "../dtos/CreateBookDTO";
 
 export class BooksController {
   async get(req: Request, res: Response) {
@@ -78,34 +78,31 @@ export class BooksController {
   async update(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const authorData = req.body;
+      const bookData = req.body;
 
-      console.log(id, authorData);
-      const dto = new UpdateAuthorDTO();
-      Object.assign(dto, authorData);
+      const dto = new UpdateBookDTO();
+      Object.assign(dto, bookData);
 
       const errors = await validate(dto);
       if (errors.length > 0) {
         return ResponseUtl.sendError(res, "Invalid data", 422, errors);
       }
 
-      // await validateOrReject(dto);
-
-      const repo = AppDataSource.getRepository(Author);
-      const author = await repo.findOneByOrFail({
+      const repo = AppDataSource.getRepository(Book);
+      const book = await repo.findOneByOrFail({
         id: Number(id),
       });
 
-      repo.merge(author, authorData);
-      await repo.save(author);
+      repo.merge(book, bookData);
+      await repo.save(book);
 
-      return ResponseUtl.sendResponse<Author>(
+      return ResponseUtl.sendResponse<Book>(
         res,
-        "Author updated successfully",
-        author
+        "Book updated successfully",
+        book
       );
     } catch (error) {
-      return ResponseUtl.sendError(res, "Failed to update author", 404, error);
+      return ResponseUtl.sendError(res, "Failed to update book", 404, error);
     }
   }
 
