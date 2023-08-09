@@ -9,6 +9,7 @@ import {
 } from "class-validator";
 import { IsUnique } from "../validators/IsUniqueValidator";
 import { Author } from "../../database/entities/Author";
+import { Book } from "../../database/entities/Book";
 
 export class CreateBookDTO {
   @IsNotEmpty()
@@ -40,6 +41,7 @@ export class UpdateBookDTO {
   @IsString()
   @MinLength(3)
   @MaxLength(30)
+  @IsUnique(Book, "title")
   title: string;
 
   @IsOptional()

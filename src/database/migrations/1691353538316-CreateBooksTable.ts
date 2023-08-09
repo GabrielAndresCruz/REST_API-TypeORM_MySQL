@@ -69,15 +69,14 @@ export class CreateBooksTable1691353538316 implements MigrationInterface {
       true
     );
 
-    await queryRunner.createForeignKey(
-      DBTable.BOOKS,
-      new TableForeignKey({
-        columnNames: ["authorId"],
-        referencedColumnNames: ["id"],
-        referencedTableName: "authors",
-        onDelete: "CASCADE",
-      })
-    );
+    const foreignKey = new TableForeignKey({
+      columnNames: ["authorId"],
+      referencedColumnNames: ["id"],
+      referencedTableName: "authors",
+      onDelete: "CASCADE",
+    });
+
+    await queryRunner.createForeignKey(DBTable.BOOKS, foreignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
