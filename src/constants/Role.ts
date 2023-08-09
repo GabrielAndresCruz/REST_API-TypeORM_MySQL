@@ -1,4 +1,4 @@
-export enum DBTable {
-  ADMIN = "admin",
-  USER = "user",
+export enum Roles {
+  ADMIN = 1,
+  USER = 2,
 }

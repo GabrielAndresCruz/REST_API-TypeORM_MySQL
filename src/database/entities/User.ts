@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { DBTable } from "../../constants/DBTable";
+import { Roles } from "../../constants/Role";
 
 @Entity(DBTable.USERS)
 export class User {
@@ -23,7 +24,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ default: Roles.USER })
   role: number;
 
   @BeforeInsert()
