@@ -59,14 +59,7 @@ export class AuthController {
         expiresIn: 60 * 60,
       });
 
-      // const returnUser = user.toResponse(user);
-
-      // return ResponseUtl.sendResponse(
-      //   res,
-      //   "Login successfully",
-      //   { returnUser, accessToken },
-      //   null
-      // );
+      const returnUser = user.toResponse(user);
 
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
@@ -78,7 +71,12 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000, // equivalent to 7 day
       });
 
-      res.send({ message: "Login successfully", user, accessToken });
+      return ResponseUtl.sendResponse(
+        res,
+        "Login successfully",
+        returnUser,
+        null
+      );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to login", 404, error);
     }
@@ -92,7 +90,7 @@ export class AuthController {
 
       if (!payload) {
         return res.status(401).send({
-          message: "Unauthenticated1",
+          message: "Unauthenticated",
         });
       }
 
@@ -104,14 +102,13 @@ export class AuthController {
 
       if (!user) {
         return res.status(401).send({
-          message: "Unauthenticated2",
+          message: "Unauthenticated",
         });
       }
-      console.log(user);
 
       const { password, ...data } = user;
 
-      res.send(data);
+      return ResponseUtl.sendResponse(res, "User authenticated", data, null);
     } catch (error) {
       return res.status(401).send({
         message: "Unathenticated",
@@ -127,7 +124,7 @@ export class AuthController {
 
       if (!payload) {
         return res.status(401).send({
-          message: "unauthenticated",
+          message: "Unauthenticated",
         });
       }
 
@@ -144,9 +141,7 @@ export class AuthController {
         maxAge: 24 * 60 * 60 * 1000, //equivalent to 1 day
       });
 
-      res.send({
-        message: "success",
-      });
+      return ResponseUtl.sendResponse(res, "Successfully refresh", null, null);
     } catch (error) {
       return res.status(401).send({
         message: "unauthenticated",
@@ -162,7 +157,7 @@ export class AuthController {
       if (!refreshToken) {
         return ResponseUtl.sendError(res, "No account logged", 404, null);
       }
-      //...
+
       res.cookie("accessToken", "", { maxAge: 0 });
       res.cookie("refreshToken", "", { maxAge: 0 });
 

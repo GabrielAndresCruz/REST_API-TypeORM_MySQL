@@ -5,8 +5,6 @@ import cors from "cors";
 import authorsRoute from "./routes/authors";
 import booksRoute from "./routes/books";
 import authRoute from "./routes/auth";
-import { EntityNotFoundError } from "typeorm";
-import { ResponseUtl } from "./utils/Response";
 
 const app: Express = express();
 
