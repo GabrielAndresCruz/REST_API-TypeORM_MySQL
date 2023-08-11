@@ -1,4 +1,6 @@
 import { MaxLength, MinLength, IsEmail, IsNotEmpty } from "class-validator";
+import { IsUnique } from "../validators/IsUniqueValidator";
+import { User } from "../../database/entities/User";
 
 export class RegisterDTO {
   @IsNotEmpty()
@@ -8,6 +10,7 @@ export class RegisterDTO {
 
   @IsNotEmpty()
   @IsEmail()
+  @IsUnique(User, "email")
   email: string;
 
   @IsNotEmpty()
@@ -16,4 +19,13 @@ export class RegisterDTO {
   password: string;
 }
 
-export class UpdateDTO {}
+export class LoginDTO {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @MinLength(5)
+  @MaxLength(20)
+  password: string;
+}
