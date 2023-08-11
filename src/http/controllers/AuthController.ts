@@ -5,6 +5,7 @@ import { AppDataSource } from "../../database/data-source";
 import { User } from "../../database/entities/User";
 import { ResponseUtl } from "../../utils/Response";
 import { compare } from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 export class AuthController {
   async register(
@@ -52,13 +53,23 @@ export class AuthController {
         return ResponseUtl.sendError(res, "Invalid email", 401, null);
       }
 
-      let passwordMatches = await compare( password, user.password)
+      let passwordMatches = await compare(password, user.password);
       if (!passwordMatches) {
-        return ResponseUtl.sendError(res, "Invalid password", 401, null)
+        return ResponseUtl.sendError(res, "Invalid password", 401, null);
       }
 
-      let accessToken = 
-      return ResponseUtl.sendResponse(res, "Login successfully", user, null);
+      let accessToken = sign({ userId: user.id }, "accessKey", {
+        expiresIn: "30m",
+      });
+
+      const returnUser = user.toResponse(user);
+
+      return ResponseUtl.sendResponse(
+        res,
+        "Login successfully",
+        { returnUser, accessToken },
+        null
+      );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to login", 404, error);
     }
