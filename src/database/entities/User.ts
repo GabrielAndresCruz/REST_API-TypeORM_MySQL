@@ -37,17 +37,4 @@ export class User {
 
   @UpdateDateColumn()
   updateAt: Date;
-
-  toResponse(user: User): Partial<User> {
-    const responseUser = new User();
-
-    responseUser.id = user.id;
-    responseUser.name = user.name;
-    responseUser.email = user.email;
-    responseUser.role = user.role;
-    responseUser.createdAt = user.createdAt;
-    responseUser.updateAt = user.updateAt;
-
-    return responseUser;
-  }
 }
