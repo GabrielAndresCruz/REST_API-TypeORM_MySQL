@@ -8,11 +8,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 export class AuthController {
-  async register(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
+  async register(req: Request, res: Response): Promise<Response> {
     try {
       const registerData = req.body;
       const dto = new RegisterDTO();
@@ -35,11 +31,7 @@ export class AuthController {
     }
   }
 
-  async login(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> {
+  async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const dto = new LoginDTO();
@@ -58,20 +50,48 @@ export class AuthController {
         return ResponseUtl.sendError(res, "Invalid password", 401, null);
       }
 
-      let accessToken = sign({ userId: user.id }, "accessKey", {
-        expiresIn: "30m",
+      let accessToken = sign({ userId: user.id }, "access_secret", {
+        expiresIn: 60 * 60,
       });
 
-      const returnUser = user.toResponse(user);
+      let refreshToken = sign({ userId: user.id }, "refresh_secret", {
+        expiresIn: 60 * 60,
+      });
 
-      return ResponseUtl.sendResponse(
-        res,
-        "Login successfully",
-        { returnUser, accessToken },
-        null
-      );
+      // const returnUser = user.toResponse(user);
+
+      // return ResponseUtl.sendResponse(
+      //   res,
+      //   "Login successfully",
+      //   { returnUser, accessToken },
+      //   null
+      // );
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, // equivalent to 1 day
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // equivalent to 7 day
+      });
+
+      res.send({ message: "Login successfully" });
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to login", 404, error);
+    }
+  }
+
+  async logout(req: Request, res: Response) {
+    try {
+      //Logic for corroborate the token login
+
+      //...
+      res.cookie("accessToken", "", { maxAge: 0 });
+      res.cookie("refreshToken", "", { maxAge: 0 });
+    } catch (error) {
+      return ResponseUtl.sendError(res, "Failed to logout", 404, error);
     }
   }
 }
