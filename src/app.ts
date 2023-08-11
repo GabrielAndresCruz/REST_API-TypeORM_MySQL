@@ -1,4 +1,5 @@
 import express, { Express, NextFunction, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authorsRoute from "./routes/authors";
@@ -9,6 +10,7 @@ import { ResponseUtl } from "./utils/Response";
 
 const app: Express = express();
 
+app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
