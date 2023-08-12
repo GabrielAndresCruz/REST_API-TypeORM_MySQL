@@ -59,8 +59,6 @@ export class AuthController {
         expiresIn: 60 * 60,
       });
 
-      const returnUser = user.toResponse(user);
-
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // equivalent to 1 day
@@ -71,12 +69,7 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000, // equivalent to 7 day
       });
 
-      return ResponseUtl.sendResponse(
-        res,
-        "Login successfully",
-        returnUser,
-        null
-      );
+      return ResponseUtl.sendResponse(res, "Login successfully", user, null);
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to login", 404, error);
     }

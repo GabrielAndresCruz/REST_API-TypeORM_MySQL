@@ -1,6 +1,7 @@
 import express from "express";
 import { FileUploader } from "../http/middlewares/FileUploader";
 import { BooksController } from "../http/controllers/BooksController";
+import { AuthMiddleware } from "../http/middlewares/AuthMiddleware";
 
 const router = express.Router();
 
@@ -12,12 +13,13 @@ router.get("/:id", booksControler.getBook);
 
 router.post(
   "/",
+  AuthMiddleware.authenticate,
   FileUploader.upload("image", "authors", 2 * 1024 * 1024),
   booksControler.create
 );
 
-router.put("/:id", booksControler.update);
+router.put("/:id", AuthMiddleware.authenticate, booksControler.update);
 
-router.delete("/:id", booksControler.delete);
+router.delete("/:id", AuthMiddleware.authenticate, booksControler.delete);
 
 export default router;
