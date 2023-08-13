@@ -36,6 +36,9 @@ export class BooksController {
       const book = await AppDataSource.getRepository(Book).findOneByOrFail({
         id: Number(id),
       });
+
+      book.image = `http://localhost:3001/images/books/${book.image}`;
+
       return ResponseUtl.sendResponse<Book>(
         res,
         "Fetch book successfully",

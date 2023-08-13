@@ -15,12 +15,12 @@ export class CreateBookDTO {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @MaxLength(30)
+  @MaxLength(50)
   title: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(200)
+  @MaxLength(500)
   description: string;
 
   @IsNotEmpty()

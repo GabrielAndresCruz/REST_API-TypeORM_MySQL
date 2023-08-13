@@ -12,7 +12,7 @@ export class FileUploader {
   ) {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
-        const folder = path.resolve(`uploads/${folderName}`);
+        const folder = path.resolve(`uploads/books/${folderName}`);
         if (!fs.existsSync(folder)) {
           fs.mkdirSync(folder);
         }
