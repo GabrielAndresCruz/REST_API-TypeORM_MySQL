@@ -10,7 +10,8 @@
     "migration:show": "npm run typeorm migration:show",
     "migration:create": "node scripts/migration-create.js",
     "migration:run": "npm run typeorm migration:run",
-    "migration:revert": "npm run typeorm migration:revert"
+    "migration:revert": "npm run typeorm migration:revert",
+    "migration:reset": "npm run typeorm schema:drop && npm run typeorm migration:run"
   },
   "keywords": [],
   "author": "",

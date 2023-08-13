@@ -89,7 +89,7 @@ export class AuthController {
 
       const user = await AppDataSource.getRepository(User).findOne({
         where: {
-          id: payload.id,
+          id: payload.userId,
         },
       });
 

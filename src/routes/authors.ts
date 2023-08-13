@@ -23,8 +23,8 @@ router.put("/:id", AuthMiddleware.authenticate, authorsController.update);
 
 router.delete(
   "/:id",
-  AdminMiddleware.check,
   AuthMiddleware.authenticate,
+  AdminMiddleware.check,
   authorsController.delete
 );
 

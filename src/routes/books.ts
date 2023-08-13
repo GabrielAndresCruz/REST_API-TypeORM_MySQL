@@ -23,8 +23,8 @@ router.put("/:id", AuthMiddleware.authenticate, booksControler.update);
 
 router.delete(
   "/:id",
-  AdminMiddleware.check,
   AuthMiddleware.authenticate,
+  AdminMiddleware.check,
   booksControler.delete
 );
 
