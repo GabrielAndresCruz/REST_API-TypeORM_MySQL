@@ -7,6 +7,7 @@ import { CreateAuthorDTO, UpdateAuthorDTO } from "../dtos/CreateAuthorDTO";
 import { validate, validateOrReject } from "class-validator";
 import { Book } from "../../database/entities/Book";
 import { CreateBookDTO, UpdateBookDTO } from "../dtos/CreateBookDTO";
+import { ImageUtil } from "../../utils/ImageUtil";
 
 export class BooksController {
   async get(req: Request, res: Response) {
@@ -37,7 +38,7 @@ export class BooksController {
         id: Number(id),
       });
 
-      book.image = `http://localhost:3001/images/books/${book.image}`;
+      book.image = ImageUtil.prepareUrl("books", book.image);
 
       return ResponseUtl.sendResponse<Book>(
         res,

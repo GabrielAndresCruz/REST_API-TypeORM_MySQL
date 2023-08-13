@@ -10,7 +10,7 @@ export class ImagesController {
     if (!imagesTypes.includes(type)) {
       return ResponseUtl.sendError(res, "Invalid image type", 500, null);
     }
-    let filePath = path.join(__dirname, "..", "uploads", type, id);
+    let filePath = path.join(__dirname, "../../../", "uploads", type, id);
 
     if (!fs.existsSync(filePath)) {
       return ResponseUtl.sendError(res, "Invalid image", 404, null);

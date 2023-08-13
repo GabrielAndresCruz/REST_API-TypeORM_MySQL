@@ -15,7 +15,7 @@ router.get("/:id", booksControler.getBook);
 router.post(
   "/",
   AuthMiddleware.authenticate,
-  FileUploader.upload("image", "authors", 2 * 1024 * 1024),
+  FileUploader.upload("image", "books", 2 * 1024 * 1024),
   booksControler.create
 );
 
