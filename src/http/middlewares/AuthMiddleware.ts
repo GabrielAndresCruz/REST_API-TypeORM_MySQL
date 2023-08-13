@@ -3,6 +3,7 @@ import { ResponseUtl } from "../../utils/Response";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../database/data-source";
 import { User } from "../../database/entities/User";
+import { Roles } from "../../constants/Role";
 
 export class AuthMiddleware {
   static async authenticate(req: Request, res: Response, next: NextFunction) {
@@ -10,10 +11,6 @@ export class AuthMiddleware {
     if (!tokenHeader) {
       return ResponseUtl.sendError(res, "Token not provided", 401, null);
     }
-    console.log(tokenHeader);
-    const token = tokenHeader.split(" ")[1];
-    console.log(token);
-
     try {
       const decoded = jwt.verify(tokenHeader, "access_secret");
       //@ts-ignore

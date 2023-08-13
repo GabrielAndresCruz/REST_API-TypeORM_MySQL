@@ -2,6 +2,7 @@ import express from "express";
 import { FileUploader } from "../http/middlewares/FileUploader";
 import { BooksController } from "../http/controllers/BooksController";
 import { AuthMiddleware } from "../http/middlewares/AuthMiddleware";
+import { AdminMiddleware } from "../http/middlewares/AdminMiddleware";
 
 const router = express.Router();
 
@@ -20,6 +21,11 @@ router.post(
 
 router.put("/:id", AuthMiddleware.authenticate, booksControler.update);
 
-router.delete("/:id", AuthMiddleware.authenticate, booksControler.delete);
+router.delete(
+  "/:id",
+  AdminMiddleware.check,
+  AuthMiddleware.authenticate,
+  booksControler.delete
+);
 
 export default router;
