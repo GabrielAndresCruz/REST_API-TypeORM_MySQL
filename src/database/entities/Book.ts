@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { DBTable } from "../../constants/DBTable";
 import { Author } from "./Author";
+import { ImageUtil } from "../../utils/Image";
 
 @Entity(DBTable.BOOKS)
 export class Book {
@@ -41,4 +42,18 @@ export class Book {
 
   @UpdateDateColumn()
   updateAt: Date;
+
+  toPayload(): Partial<Book> {
+    return {
+      id: this.id,
+      title: this.title,
+      image: ImageUtil.prepareUrl("books", this.image),
+      description: this.description,
+      author: this.author,
+      price: this.price,
+      category: this.category,
+      createdAt: this.createdAt,
+      updateAt: this.updateAt,
+    };
+  }
 }

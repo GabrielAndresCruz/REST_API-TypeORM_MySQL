@@ -11,16 +11,20 @@ export class BooksController {
   async get(req: Request, res: Response) {
     try {
       const builder = await AppDataSource.getRepository(Book)
-        .createQueryBuilder()
-        .orderBy("id", "DESC");
+        .createQueryBuilder("book")
+        .leftJoinAndSelect("book.author", "author")
+        .orderBy("book.id", "DESC");
       const { records: books, paginationInfo } = await Paginator.paginate(
         builder,
         req
       );
+      const bookData = books.map((book: Book) => {
+        return book.toPayload();
+      });
       return ResponseUtl.sendResponse<Book>(
         res,
         "Fetched books successfully",
-        books,
+        bookData,
         paginationInfo
       );
     } catch (error) {
@@ -38,10 +42,10 @@ export class BooksController {
 
       book.image = ImageUtil.prepareUrl("books", book.image);
 
-      return ResponseUtl.sendResponse<Book>(
+      return ResponseUtl.sendResponse<Partial<Book>>(
         res,
         "Fetch book successfully",
-        book
+        book.toPayload()
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to fetch book", 404, error);
