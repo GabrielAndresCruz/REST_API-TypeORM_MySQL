@@ -5,6 +5,7 @@ import cors from "cors";
 import authorsRoute from "./routes/authors";
 import booksRoute from "./routes/books";
 import authRoute from "./routes/auth";
+import imageRoute from "./routes/image";
 import { ImagesController } from "./http/controllers/ImagesController";
 
 const app: Express = express();
@@ -14,12 +15,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const imagesController = new ImagesController();
-
 app.use("/authors", authorsRoute);
 app.use("/books", booksRoute);
 app.use("/auth", authRoute);
-app.get("/images/:type/:id", imagesController.get);
+app.use("/images", imageRoute);
 
 app.use("*", (req, res) => {
   return res.status(404).json({
