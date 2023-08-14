@@ -9,7 +9,6 @@ import { validate, validateOrReject } from "class-validator";
 export class AuthorsController {
   async getAuthors(req: Request, res: Response) {
     try {
-      // const authors = await AppDataSource.getRepository(Author).find();
       const builder = await AppDataSource.getRepository(Author)
         .createQueryBuilder()
         .orderBy("id", "DESC");
@@ -17,10 +16,13 @@ export class AuthorsController {
         builder,
         req
       );
+      const authorsData = authors.map((author: Author) => {
+        return author.toPayload();
+      });
       return ResponseUtl.sendResponse<Author>(
         res,
         "Fetched authors successfully",
-        authors,
+        authorsData,
         paginationInfo
       );
     } catch (error) {
@@ -39,7 +41,7 @@ export class AuthorsController {
       return ResponseUtl.sendResponse<Author>(
         res,
         "Fetch author successfully",
-        author
+        author.toPayload()
       );
     } catch (error) {
       return ResponseUtl.sendError(res, "Failed to fetch author", 404, error);

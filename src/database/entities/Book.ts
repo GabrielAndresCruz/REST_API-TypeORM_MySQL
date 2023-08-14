@@ -47,9 +47,9 @@ export class Book {
     return {
       id: this.id,
       title: this.title,
-      image: ImageUtil.prepareUrl("books", this.image),
+      image: ImageUtil.prepareUrl(DBTable.BOOKS, this.image),
       description: this.description,
-      author: this.author,
+      author: this.author.toPayload(),
       price: this.price,
       category: this.category,
       createdAt: this.createdAt,
