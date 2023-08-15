@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -6,7 +6,6 @@ import authorsRoute from "./routes/authors";
 import booksRoute from "./routes/books";
 import authRoute from "./routes/auth";
 import imageRoute from "./routes/image";
-import { ImagesController } from "./http/controllers/ImagesController";
 
 const app: Express = express();
 

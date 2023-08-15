@@ -1,16 +1,45 @@
 version: "3.8"
 
+networks:
+  REST_API:
+
 services:
   mysqldb:
     image: mysql:8
-    # restart: unless-stopped
-    # env_file: ./.env
     environment:
       - MYSQL_USER=$DB_USERNAME
       - MYSQL_PASSWORD=$DB_PASSWORD
       - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
       - MYSQL_DATABASE=$DB_DATABASE
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    networks:
+      - REST_API
     ports:
       - $DB_PORT:3306
     logging:
       driver: none
+
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes: 
+      - ./:/app
+    environment: 
+      NODE_ENV: development
+      DB_HOST: mysqldb
+      DB_USERNAME: user
+      DB_PASSWORD: password123
+      DB_DATABASE: userdb
+    depends_on:
+      - mysqldb
+    command: npm run dev
+    ports: 
+      - "3000:3000"
+    networks: 
+      - REST_API
+
+volumes:
+  mysql: 
+
