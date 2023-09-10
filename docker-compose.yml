@@ -28,10 +28,10 @@ services:
       - ./:/app
     environment: 
       NODE_ENV: development
-      DB_HOST: mysqldb
-      DB_USERNAME: user
-      DB_PASSWORD: password123
-      DB_DATABASE: userdb
+      DB_HOST: $DB_HOST
+      DB_USERNAME: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD
+      DB_DATABASE: $DB_DATABASE
     depends_on:
       - mysqldb
     command: npm run dev

@@ -8,7 +8,7 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: "mysql",
-  host: process.env.DB_HOST,
+  host: "127.0.0.1", // This IP direction is for locally running db and server. If you have a deployed server, you must be change the host server direction.
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
